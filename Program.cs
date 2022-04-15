@@ -1,2 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+
+namespace CurrencyApp
+{
+    public class Currency
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("HEloo");
+        }
+    }
+}
