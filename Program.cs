@@ -11,12 +11,17 @@ namespace CurrencyApp
 
     class CurrencyApiConection
     {
+        HttpClient client = new HttpClient();
         public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/last/";
         public CurrencyApiConection(string PathUrl)
         {
             this.BaseUrlAndressOfApi = this.BaseUrlAndressOfApi + PathUrl;
         }
-       
+        public string GetApiResponse()
+        {
+            string Response = client.GetStringAsync(this.BaseUrlAndressOfApi).Result;
+            return Response;
+        }
 
     }
    
@@ -27,8 +32,10 @@ namespace CurrencyApp
         {
             Currency CurrencyInstance= new Currency();
             CurrencyApiConection CurrencyApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
+           
+            string ResponseApiResult= CurrencyApiInstance.GetApiResponse();
 
-            
+            Console.WriteLine(ResponseApiResult);
             
             
         }
