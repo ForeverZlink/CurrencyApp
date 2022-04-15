@@ -11,18 +11,23 @@ namespace CurrencyApp
 
     class CurrencyApiConection
     {
-        public string UrlAndress;
-        public CurrencyApiConection(string UrlAndress)
+        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/last/";
+        public CurrencyApiConection(string PathUrl)
         {
-            this.UrlAndress = UrlAndress;
+            this.BaseUrlAndressOfApi = this.BaseUrlAndressOfApi + PathUrl;
         }
+       
 
     }
+   
     public class Currency
     {
+        public  string PathUrlRequired="USD-BRL";
         static void Main(string[] args)
         {
-            Console.WriteLine("Bem vindo ao CurrencyApp");
+            Currency CurrencyInstance= new Currency();
+            CurrencyApiConection CurrencyApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
+
             
             
             
