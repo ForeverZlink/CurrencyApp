@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace CurrencyApp
 {
     public class CurrencyMenu {
@@ -22,22 +23,40 @@ namespace CurrencyApp
             string Response = client.GetStringAsync(this.BaseUrlAndressOfApi).Result;
             return Response;
         }
-
+        
     }
-   
+    
+    
     public class Currency
     {
-        public  string PathUrlRequired="USD-BRL";
+        public string PathUrlRequired="USD-BRL";
+        public string? ResponseApiResult;
+        
+        
+       
+        
+
         static void Main(string[] args)
         {
             Currency CurrencyInstance= new Currency();
-            CurrencyApiConection CurrencyApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
+            CurrencyApiConection CurrencyConectionApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
            
-            string ResponseApiResult= CurrencyApiInstance.GetApiResponse();
-
-            Console.WriteLine(ResponseApiResult);
+            CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
+            Console.WriteLine(CurrencyInstance.ResponseApiResult);
+            CurrencyInstance.DeserializeJsonFromApiResult();
             
+            
+        } 
+        public void DeserializeJsonFromApiResult()
+        {
+           
+            
+            JsonDocument DocumentJson = JsonDocument.Parse(this.ResponseApiResult);
+            JsonElement JsonConverted = DocumentJson.RootElement;
+
+            Console.WriteLine(JsonConverted.GetProperty("USDBRL").GetProperty("code"));
             
         }
+
     }
 }
