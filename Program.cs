@@ -43,18 +43,18 @@ namespace CurrencyApp
            
             CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
             Console.WriteLine(CurrencyInstance.ResponseApiResult);
-            CurrencyInstance.DeserializeJsonFromApiResult();
+            CurrencyInstance.CreateJsonDocumentFromApiResult();
             
             
         } 
-        public void DeserializeJsonFromApiResult()
+        public void CreateJsonDocumentFromApiResult()
         {
            
             
             JsonDocument DocumentJson = JsonDocument.Parse(this.ResponseApiResult);
-            JsonElement JsonConverted = DocumentJson.RootElement;
+            JsonElement JsonRepresentation = DocumentJson.RootElement;
 
-            Console.WriteLine(JsonConverted.GetProperty("USDBRL").GetProperty("code"));
+            Console.WriteLine(JsonRepresentation.GetProperty("USDBRL").GetProperty("code"));
             
         }
 
