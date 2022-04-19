@@ -3,10 +3,16 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 namespace CurrencyApp
 {
-    public class CurrencyMenu {
+    public class CurrencyMenuShow {
+        public void ShowOptions()
+        {
+            string message = "Suas opções são\n[1]-Mostra a contação de todas as moedas\n2-Escolher detalhes de uma moeda especifíca ";
+            Console.WriteLine(message);
+        }
         public static  void CurrencMenuStart()
         {
-
+            string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo"
+            Console.WriteLine(message);
         }
     }
 
