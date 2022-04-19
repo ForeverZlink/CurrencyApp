@@ -10,7 +10,7 @@ namespace CurrencyApp
         }
     }
 
-    class CurrencyApiConection
+    public class  CurrencyApiConection
     {
         HttpClient client = new HttpClient();
         public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/last/";
@@ -36,7 +36,7 @@ namespace CurrencyApp
        
         
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Currency CurrencyInstance= new Currency();
             CurrencyApiConection CurrencyConectionApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
@@ -47,15 +47,15 @@ namespace CurrencyApp
             
             
         } 
-        public void CreateJsonDocumentFromApiResult()
+        public JsonElement CreateJsonDocumentFromApiResult()
         {
            
             
             JsonDocument DocumentJson = JsonDocument.Parse(this.ResponseApiResult);
+            
             JsonElement JsonRepresentation = DocumentJson.RootElement;
 
-            Console.WriteLine(JsonRepresentation.GetProperty("USDBRL").GetProperty("code"));
-            
+            return JsonRepresentation;
         }
 
     }
