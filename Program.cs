@@ -8,18 +8,24 @@ namespace CurrencyApp
         {
             string message = "Suas opções são\n[1]-Mostra a contação de todas as moedas\n2-Escolher detalhes de uma moeda especifíca ";
             Console.WriteLine(message);
+            Console.Write("Digite a opção escolhida ");
+            
         }
         public static  void CurrencMenuStart()
         {
-            string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo"
+            CurrencyMenuShow Menu = new CurrencyMenuShow();
+            string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
             Console.WriteLine(message);
+            Menu.ShowOptions();
+
+            
         }
     }
 
     public class  CurrencyApiConection
     {
         HttpClient client = new HttpClient();
-        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/last/";
+        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/";
         public CurrencyApiConection(string PathUrl)
         {
             this.BaseUrlAndressOfApi = this.BaseUrlAndressOfApi + PathUrl;
@@ -35,7 +41,7 @@ namespace CurrencyApp
     
     public class Currency
     {
-        public string PathUrlRequired="USD-BRL";
+        public string PathUrlRequired="All";
         public string? ResponseApiResult;
         
         
@@ -45,6 +51,10 @@ namespace CurrencyApp
         public static void Main(string[] args)
         {
             Currency CurrencyInstance= new Currency();
+            CurrencyMenuShow Menu = new CurrencyMenuShow();
+            CurrencyMenuShow.CurrencMenuStart();
+            
+           
             CurrencyApiConection CurrencyConectionApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
            
             CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
