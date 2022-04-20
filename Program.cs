@@ -65,10 +65,18 @@ namespace CurrencyApp
         } 
         public JsonElement CreateJsonDocumentFromApiResult()
         {
-           
+            JsonDocument DocumentJson;
+            try
+            {
+                DocumentJson= JsonDocument.Parse(this.ResponseApiResult);
+            }
+            catch (JsonException error)
+            {
+                Console.WriteLine("Não é possível converter porque o argumento passado não é no formato json");
+                throw error;
+            }
             
-            JsonDocument DocumentJson = JsonDocument.Parse(this.ResponseApiResult);
-            
+
             JsonElement JsonRepresentation = DocumentJson.RootElement;
 
             return JsonRepresentation;
