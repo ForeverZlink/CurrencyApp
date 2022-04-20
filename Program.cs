@@ -9,15 +9,36 @@ namespace CurrencyApp
             string message = "Suas opções são\n[1]-Mostra a contação de todas as moedas\n2-Escolher detalhes de uma moeda especifíca ";
             Console.WriteLine(message);
             Console.Write("Digite a opção escolhida ");
-            
+
         }
-        public static  void CurrencMenuStart()
+        public static void CurrencMenuStart()
         {
             CurrencyMenuShow Menu = new CurrencyMenuShow();
             string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
             Console.WriteLine(message);
             Menu.ShowOptions();
 
+
+        }
+    }
+    public class CurrencyMenuHandlerLogic{
+        enum Options
+        {
+            AllCoins= 1,
+            SpecificCoin= 2
+        }
+        public void ReadInputUser(){
+            while (true) {
+                string? Choise= Console.ReadLine();
+                this.CheckIfChoiseIsValid(Choise);
+            }
+
+            
+            
+        }
+
+        public void CheckIfChoiseIsValid(string ChoiseOfUser)
+        {
             
         }
     }
@@ -53,6 +74,7 @@ namespace CurrencyApp
             Currency CurrencyInstance= new Currency();
             CurrencyMenuShow Menu = new CurrencyMenuShow();
             CurrencyMenuShow.CurrencMenuStart();
+            var UserChoise = 
             
            
             CurrencyApiConection CurrencyConectionApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
