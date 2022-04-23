@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace CurrencyApp
 {
     public class CurrencyMenuShow {
-        public void ShowOptions()
+        public static void ShowOptions()
         {
             string message = "Suas opções são\n[1]-Mostra a contação de todas as moedas\n2-Escolher detalhes de uma moeda especifíca ";
             Console.WriteLine(message);
@@ -16,31 +16,58 @@ namespace CurrencyApp
             CurrencyMenuShow Menu = new CurrencyMenuShow();
             string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
             Console.WriteLine(message);
-            Menu.ShowOptions();
+            ShowOptions();
+            
+
 
 
         }
     }
     public class CurrencyMenuHandlerLogic{
+        int ChoiseOfUserValid;
         enum Options
         {
             AllCoins= 1,
             SpecificCoin= 2
         }
-        public void ReadInputUser(){
-            while (true) {
-                string? Choise= Console.ReadLine();
-                this.CheckIfChoiseIsValid(Choise);
+        public int ReadInputUser(){
+            while (true){   
+                
+                string? Choise = Console.ReadLine();
+                bool Response = this.CheckIfChoiseIsNumber(Choise);
+                if (Response)
+                {
+                    Console.WriteLine($"O numero é {this.ChoiseOfUserValid}");
+                    return this.ChoiseOfUserValid;
+                }
+                else
+                {
+                    Console.WriteLine("Digite apenas um valor que esteja nas opções!");
+                    CurrencyMenuShow.ShowOptions();
+                }
+                
             }
+            
 
-            
-            
+
+
         }
-
-        public void CheckIfChoiseIsValid(string ChoiseOfUser)
+        public bool CheckIfChoiseIsNumber(string ChoiseOfUser)
         {
-            
+            try
+            {
+                this.ChoiseOfUserValid= int.Parse(ChoiseOfUser);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Escolha Invalida");
+                return false;
+            }
+            return true;
+
+
         }
+
     }
 
     public class  CurrencyApiConection
@@ -62,7 +89,7 @@ namespace CurrencyApp
     
     public class Currency
     {
-        public string PathUrlRequired="All";
+        public string PathUrlRequired="USD-BRL";
         public string? ResponseApiResult;
         
         
@@ -72,16 +99,19 @@ namespace CurrencyApp
         public static void Main(string[] args)
         {
             Currency CurrencyInstance= new Currency();
-            CurrencyMenuShow Menu = new CurrencyMenuShow();
+            
             CurrencyMenuShow.CurrencMenuStart();
-            var UserChoise = 
+            CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
+            MenuHandler.ReadInputUser();
+            
             
            
             CurrencyApiConection CurrencyConectionApiInstance= new CurrencyApiConection(CurrencyInstance.PathUrlRequired);
            
             CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
-            Console.WriteLine(CurrencyInstance.ResponseApiResult);
+            
             CurrencyInstance.CreateJsonDocumentFromApiResult();
+            Console.ReadLine();
             
             
         } 
@@ -100,6 +130,7 @@ namespace CurrencyApp
             
 
             JsonElement JsonRepresentation = DocumentJson.RootElement;
+            Console.WriteLine(JsonRepresentation);
 
             return JsonRepresentation;
         }
