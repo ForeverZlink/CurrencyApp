@@ -24,7 +24,7 @@ namespace CurrencyApp
         }
     }
     public class CurrencyMenuHandlerLogic{
-        int ChoiseOfUserValid;
+        public int ChoiseOfUserValid;
         enum Options
         {
             AllCoins= 1,
