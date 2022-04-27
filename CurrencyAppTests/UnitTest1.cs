@@ -50,14 +50,31 @@ namespace CurrencyAppTests
         CurrencyMenuHandlerLogic CurrencyMenuLogicInstance = new CurrencyMenuHandlerLogic();
 
         [TestMethod]
-        public void Test1IfChoiseIsNumber()
+        public void Test1IfChoiseIsAOptionValid()
         {
-            string NumberforTest="3";
-            bool ResultOfTest = this.CurrencyMenuLogicInstance.CheckIfChoiseIsNumber(NumberforTest);
-            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValid, 3);
-            Assert.IsTrue(ResultOfTest);
-            
-           
+            //1°Case: True is waited, because the number are in options and not is a letter
+            string NumberforTest="2";
+            bool ResultOfTestTrue = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(NumberforTest);
+            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValid, 2);
+            Assert.IsTrue(ResultOfTestTrue);
+
+            //2°Case: False is waited, because this is a number and this method always return false in this codition
+            NumberforTest = "word_testing";
+            bool ResultOfTestFalse = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(NumberforTest);
+            Assert.IsFalse(ResultOfTestFalse);
+
+            //3°Case: False is waited, because the variable its a number
+            //but not is a valid option due a not are available int options
+
+            NumberforTest = "100000";
+            bool ResultOfTestFalseBecauseOfNotAvailable = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(NumberforTest);
+            Assert.IsFalse(ResultOfTestFalseBecauseOfNotAvailable);
+
+
+
+
+
+
         }
         
         [TestMethod]

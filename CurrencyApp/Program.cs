@@ -32,7 +32,7 @@ namespace CurrencyApp
             while (true){   
                 
                 string? Choise = Console.ReadLine();
-                bool Response = this.CheckIfChoiseIsNumber(Choise);
+                bool Response = this.CheckIfChoiseIsAOptionValidHandler(Choise);
                 if (Response)
                 {
                     Console.WriteLine($"O numero é {this.ChoiseOfUserValid}");
@@ -50,18 +50,37 @@ namespace CurrencyApp
 
 
         }
-        public bool CheckIfChoiseIsNumber(string ChoiseOfUser)
+        public bool CheckIfChoiseIsAOptionValidHandler(string ChoiseOfUser)
         {
+
+            bool IsNumber = this.CheckIfChoiseIsNumber(ChoiseOfUser);
+            if (IsNumber)
+            {
+                bool ItsOptionOrNot = this.CheckIfChoiseAreInOptions();
+                return (ItsOptionOrNot ? true : false);
+
+            }
+            return false;
+            
+            
+            
+
+
+        }
+        public bool CheckIfChoiseIsNumber(string ChoiseOfUser) {
+
             try
             {
-                this.ChoiseOfUserValid= int.Parse(ChoiseOfUser);
+                this.ChoiseOfUserValid = int.Parse(ChoiseOfUser);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Escolha Invalida");
                 return false;
             }
             return true;
+
+
 
 
         }
