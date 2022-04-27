@@ -50,14 +50,35 @@ namespace CurrencyAppTests
         CurrencyMenuHandlerLogic CurrencyMenuLogicInstance = new CurrencyMenuHandlerLogic();
 
         [TestMethod]
-        public void TestIfChoiseIsNumber()
+        public void Test1IfChoiseIsNumber()
         {
-            string NumberforTest="1";
+            string NumberforTest="3";
             bool ResultOfTest = this.CurrencyMenuLogicInstance.CheckIfChoiseIsNumber(NumberforTest);
-            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValid, 1);
+            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValid, 3);
             Assert.IsTrue(ResultOfTest);
-
+            
            
         }
+        
+        [TestMethod]
+
+        public void Test2IfChoiseAreInOptions2()
+        {
+            //test if the method can find out if the number are in options 
+            this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 2;
+            bool response_true= this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptions();
+            Assert.IsTrue(response_true);
+
+            //this test has the responsability of force a error and verify if the method
+            //can return a waited response that this context is false, because
+            //doesn't exists option with value 1000
+            this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1000;
+            bool response_false = this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptions();
+            Assert.IsFalse(response_false);
+        }
+
+
+
+
     }
 }

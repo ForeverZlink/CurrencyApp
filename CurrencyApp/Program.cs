@@ -25,11 +25,9 @@ namespace CurrencyApp
     }
     public class CurrencyMenuHandlerLogic{
         public int ChoiseOfUserValid;
-        enum Options
-        {
-            AllCoins= 1,
-            SpecificCoin= 2
-        }
+        Dictionary<string, int> Options = new Dictionary<string, int> {
+            { "AllCoins",1 },{"SpecificCoin",2 }};
+        
         public int ReadInputUser(){
             while (true){   
                 
@@ -66,6 +64,18 @@ namespace CurrencyApp
             return true;
 
 
+        }
+        public bool CheckIfChoiseAreInOptions()
+        {
+            foreach(int option in this.Options.Values)
+            {
+                if (this.ChoiseOfUserValid == option)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
         }
 
     }
