@@ -13,6 +13,14 @@ namespace CurrencyAppTests
 
         
         [TestMethod]
+        public void TestGetterSetterVariable()
+        {
+            CurrencyApiInstance = new CurrencyApiConection();
+            
+            Assert.AreEqual("https://economia.awesomeapi.com.br/All",CurrencyApiInstance.BaseUrlAndressOfApi);
+        }
+
+        [TestMethod]
         public void TestGetApiResponse()
         {
             CurrencyApiInstance = new CurrencyApiConection(MainClass.PathUrlRequired);
@@ -78,22 +86,7 @@ namespace CurrencyAppTests
 
 
         }
-        [TestMethod]
-        public  void TestMenuDifferentiatorOptionInit()
-        {
-            this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1;
-            CurrencyApiConection Api = new CurrencyApiConection();
-            this.CurrencyMenuLogicInstance.MenuOptionCallerApiThatDependOfChoise(Api);
-
-
-        }
-
-        [TestMethod]
-        public void TransformOptionNumberInKeyOfDictionary()
-        {
-            
-        }
-        [TestMethod]
+        
 
         public void Test2IfChoiseAreInOptions2()
         {

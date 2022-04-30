@@ -60,15 +60,18 @@ namespace CurrencyApp
         {
             switch (this.ChoiseOfUserValid)
             {
+
                 case 1:
-                    ApiForTheCall.
-                    
+                    return "All";
+                case 2:
+                    return ApiForTheCall.GetApiResponse();
 
                 
             }
+            return "t";
             
         }
-        public string TransformOptionNumberInKeyOfDictionary()
+        public void TransformOptionNumberInKeyOfDictionary(ApiConnection ApiInstance)
         {
 
         }
@@ -124,17 +127,11 @@ namespace CurrencyApp
     public class  CurrencyApiConection: ApiConnection
     {
         public string AllCoins = "All";
-        public string DolarToReal = "USD-BRL";
-
+        Dictionary<int, string> Coins;
+             
         HttpClient client = new HttpClient();
-        public string BaseUrlAndressOfApi
-        {
-            get {return "https://economia.awesomeapi.com.br/"; }
-            set
-            {
-                this.BaseUrlAndressOfApi+= value;
-            }
-        } 
+        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/";
+        
 
         public CurrencyApiConection(string PathUrl = "All")
         {
