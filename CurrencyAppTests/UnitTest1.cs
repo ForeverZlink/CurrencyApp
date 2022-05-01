@@ -129,6 +129,18 @@ namespace CurrencyAppTests
             this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1000;
             bool response_false = this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu();
             Assert.IsFalse(response_false);
+
+            //test if the method can find out if the number are in options 
+            this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 2;
+            bool response_SecondMenuValid= this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu(2);
+            Assert.IsTrue(response_SecondMenuValid);
+
+            //this test has the responsability of force a error and verify if the method
+            //can return a waited response that this context is false, because
+            //doesn't exists option with value 1000
+            this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1000;
+            bool response_SecondMenuInvalidOption= this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu(2);
+            Assert.IsFalse(response_SecondMenuInvalidOption);
         }
 
 

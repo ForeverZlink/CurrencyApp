@@ -31,10 +31,16 @@ namespace CurrencyApp
     public class CurrencyMenuHandlerLogic{
         public int ChoiseOfUserValid;
         public string ChoiseOfUserKey;
-        Dictionary<string, int> Options = new Dictionary<string, int> {
+        public Dictionary<string, int> OptionsFirstMenu= new Dictionary<string, int> {
             { "All",1 },{"SpecificCoin",2 }};
+
+        public Dictionary<string, int> OptionsForChoiseJustACoins = new Dictionary<string, int> {
+            { "USDBRL",1 },{"EURBRL",2 },
+            {"BTCBRL",3 }
         
-        public string  ReadInputUser(){
+        };
+
+        public string  ReadInputUserMenu(){
             
             while (true){   
                 
@@ -52,7 +58,7 @@ namespace CurrencyApp
                 }
                 
             }
-            
+        
 
 
 
@@ -113,18 +119,32 @@ namespace CurrencyApp
 
 
         }
-        public bool CheckIfChoiseAreInOptionsMenu()
+        public bool CheckIfChoiseAreInOptionsMenu(int ItsTheMenuForChoiseACoin=1)
         {
-            foreach(int option in this.Options.Values)
+            Dictionary<string, int> Options;
+            if (ItsTheMenuForChoiseACoin == 1)
+            {
+                //REceive the option of first menu 
+                 Options = this.OptionsFirstMenu;
+
+            }
+            else
+            {
+                 Options =this.OptionsForChoiseJustACoins;
+            }
+
+            foreach (int option in Options.Values)
             {
                 if (this.ChoiseOfUserValid == option)
                 {
                     return true;
                 }
             }
-            
+
             return false;
+
         }
+
 
     }
 
@@ -178,7 +198,7 @@ namespace CurrencyApp
             CurrencyMenuShow.CurrencMenuStart();
             CurrencyApiConection CurrencyConectionApiInstance = new CurrencyApiConection();
             CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
-            MenuHandler.ReadInputUser();
+            MenuHandler.ReadInputUserMenu();
             MenuHandler.MenuOptionCallerApiThatDependOfChoise(CurrencyConectionApiInstance);
             
            
