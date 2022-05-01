@@ -25,6 +25,7 @@ namespace CurrencyApp
     }
     public interface ApiConnection
     {
+        public Dictionary<int, string> ValuesSupportedForCallApi { get;  }
         public string GetApiResponse();
     }
     public class CurrencyMenuHandlerLogic{
@@ -56,24 +57,27 @@ namespace CurrencyApp
 
 
         }
-        public string MenuOptionCallerApiThatDependOfChoise(ApiConnection ApiForTheCall)
+        public string MenuOptionCallerApiThatDependOfChoise(ApiConnection ApiForTheCallObject)
         {
-            switch (this.ChoiseOfUserValid)
+
+
+            if (this.ChoiseOfUserValid == 1)
             {
-
-                case 1:
-                    return "All";
-                case 2:
-                    return ApiForTheCall.GetApiResponse();
-
+                string ResponseOfApi = ApiForTheCallObject.GetApiResponse();
+                return ResponseOfApi;
+            }
+            else
+            {
+                string KeyForCall = this.TransformOptionNumberInKeyOfDictionary(ApiForTheCallObject.ValuesSupportedForCallApi);
                 
             }
-            return "t";
+            return "TEsting";
             
         }
-        public void TransformOptionNumberInKeyOfDictionary(ApiConnection ApiInstance)
+        public string TransformOptionNumberInKeyOfDictionary(Dictionary<int,string> DataForCompare)
         {
-
+            string KeyForApiCall = DataForCompare.GetValueOrDefault(this.ChoiseOfUserValid);
+            return KeyForApiCall;
         }
         public bool CheckIfChoiseIsAOptionValidHandler(string ChoiseOfUser)
         {
@@ -81,7 +85,7 @@ namespace CurrencyApp
             bool IsNumber = this.CheckIfChoiseIsNumber(ChoiseOfUser);
             if (IsNumber)
             {
-                bool ItsOptionOrNot = this.CheckIfChoiseAreInOptions();
+                bool ItsOptionOrNot = this.CheckIfChoiseAreInOptionsMenu();
                 return (ItsOptionOrNot ? true : false);
 
             }
@@ -109,7 +113,7 @@ namespace CurrencyApp
 
 
         }
-        public bool CheckIfChoiseAreInOptions()
+        public bool CheckIfChoiseAreInOptionsMenu()
         {
             foreach(int option in this.Options.Values)
             {
@@ -124,11 +128,23 @@ namespace CurrencyApp
 
     }
 
-    public class  CurrencyApiConection: ApiConnection
+    public class CurrencyApiConection : ApiConnection
     {
         public string AllCoins = "All";
-        Dictionary<int, string> Coins;
-             
+
+        static Dictionary<int, string> Coins = new Dictionary<int, string>
+        {
+            {1,"USD-BRL" },
+            {2,"EUR-BRL" },
+
+
+        };
+        public Dictionary<int,string> ValuesSupportedForCallApi
+        {
+            get { return Coins; }
+        }
+
+
         HttpClient client = new HttpClient();
         public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/";
         
@@ -160,12 +176,13 @@ namespace CurrencyApp
             Currency CurrencyInstance= new Currency();
             
             CurrencyMenuShow.CurrencMenuStart();
+            CurrencyApiConection CurrencyConectionApiInstance = new CurrencyApiConection();
             CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
             MenuHandler.ReadInputUser();
-            
+            MenuHandler.MenuOptionCallerApiThatDependOfChoise(CurrencyConectionApiInstance);
             
            
-            CurrencyApiConection CurrencyConectionApiInstance= new CurrencyApiConection();
+            
             MenuHandler.MenuOptionCallerApiThatDependOfChoise(CurrencyConectionApiInstance);
             CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
             
