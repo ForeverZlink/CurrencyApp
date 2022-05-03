@@ -30,13 +30,14 @@ namespace CurrencyApp
     }
     public class CurrencyMenuHandlerLogic{
         public int ChoiseOfUserValid;
+        public string ChoiseOfUserValidFirstMenu;
         public string ChoiseOfUserKey;
-        public Dictionary<string, int> OptionsFirstMenu= new Dictionary<string, int> {
-            { "All",1 },{"SpecificCoin",2 }};
+        public Dictionary<string,string> OptionsFirstMenu= new Dictionary< string,string> {
+            { "A","All"},{"Spec","SpecificCoin"}};
 
-        public Dictionary<string, int> OptionsForChoiseJustACoins = new Dictionary<string, int> {
-            { "USDBRL",1 },{"EURBRL",2 },
-            {"BTCBRL",3 }
+        public Dictionary<int,string> OptionsForChoiseJustACoins = new Dictionary<int,string> {
+            { 1,"USDBRL" },{2,"EURBRL" },
+            {3,"BTCBRL" }
         
         };
 
@@ -45,17 +46,24 @@ namespace CurrencyApp
             while (true){   
                 
                 string? Choise = Console.ReadLine();
-                bool Response = this.CheckIfChoiseIsAOptionValidHandler(Choise);
-                if (Response)
-                {
-                    Console.WriteLine($"O numero é {this.ChoiseOfUserValid}");
-                    return "pimba";
-                }
-                else
-                {
-                    Console.WriteLine("Digite apenas um valor que esteja nas opções!");
-                    CurrencyMenuShow.ShowOptions();
-                }
+                
+                    bool Response = this.CheckIfChoiseIsAOptionValidHandler(Choise);
+
+                    if (Response)
+                    {
+                        Console.WriteLine($"O numero é {this.ChoiseOfUserValidFirstMenu}");
+                        return "pimba";
+                    }
+                    else
+                    {
+                        Console.WriteLine("Digite apenas um valor que esteja nas opções!");
+                        CurrencyMenuShow.ShowOptions();
+                    }
+
+                
+                
+                
+                
                 
             }
         
@@ -87,15 +95,23 @@ namespace CurrencyApp
         }
         public bool CheckIfChoiseIsAOptionValidHandler(string ChoiseOfUser)
         {
-
-            bool IsNumber = this.CheckIfChoiseIsNumber(ChoiseOfUser);
-            if (IsNumber)
+            if (ChoiseOfUser == this.OptionsFirstMenu["A"] || ChoiseOfUser ==this.OptionsFirstMenu["Spec"])
             {
-                bool ItsOptionOrNot = this.CheckIfChoiseAreInOptionsMenu();
-                return (ItsOptionOrNot ? true : false);
-
+                this.ChoiseOfUserValidFirstMenu = ChoiseOfUser;
+                return true;
             }
-            return false;
+            else
+            {
+                bool IsNumber = this.CheckIfChoiseIsNumber(ChoiseOfUser);
+                if (IsNumber)
+                {
+                    bool ItsOptionOrNot = this.CheckIfChoiseAreInOptionsMenu();
+                    return (ItsOptionOrNot ? true : false);
+
+                }
+                return false;
+            }
+            
             
             
             
@@ -121,19 +137,11 @@ namespace CurrencyApp
         }
         public bool CheckIfChoiseAreInOptionsMenu(int ItsTheMenuForChoiseACoin=1)
         {
-            Dictionary<string, int> Options;
-            if (ItsTheMenuForChoiseACoin == 1)
-            {
-                //REceive the option of first menu 
-                 Options = this.OptionsFirstMenu;
-
-            }
-            else
-            {
-                 Options =this.OptionsForChoiseJustACoins;
-            }
-
-            foreach (int option in Options.Values)
+            Dictionary<int, string> Options;
+            
+            Options =this.OptionsForChoiseJustACoins;
+            
+            foreach (int option in Options.Keys)
             {
                 if (this.ChoiseOfUserValid == option)
                 {
