@@ -62,41 +62,22 @@ namespace CurrencyAppTests
         CurrencyMenuHandlerLogic CurrencyMenuLogicInstance = new CurrencyMenuHandlerLogic();
 
         [TestMethod]
-        public void TestCheckIfChoiseIsAOptionValidHandler()
+        public void TestCheckIfChoiseIsAOptionValidHandlerMenu()
         {
             //TEst verify if the argument of first option , are a option and wanted for a true return, because its option valid 
-            string FirstOptionMenu = "All";
-            bool FirstTrueResponseWanted  = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(FirstOptionMenu);
+            Dictionary<int,string> DataWithSpecificCoinOptions = this.CurrencyMenuLogicInstance.OptionsForChoiseJustACoins;
+            string Option = "1";
+            bool FirstTrueResponseWanted  = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandlerMenu(Option,DataWithSpecificCoinOptions);
             Assert.IsTrue(FirstTrueResponseWanted);
 
-            //TEst Verifiy if argument of second option,, are a option and wanted for a true return, because its option valid 
-            string SecondOptionMenu = "SpecificCoin";
-            bool SecondTrueResponseWanted = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(SecondOptionMenu);
-            Assert.IsTrue(SecondTrueResponseWanted);
+            //TEst Verifiy if argument is valid and wanted for a False return, because its option invalid 
+            string OptionNoneExists = "200000";
+            bool SecondFalseResponseWanted = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandlerMenu(OptionNoneExists, DataWithSpecificCoinOptions);
+            Assert.IsFalse(SecondFalseResponseWanted);
 
 
 
-            //Test Second part of method, this part just are used for verification of
-            //the other when the argument not fit with the OptionsOfFirstMenu
-            //Geraly this is be used when a user choise any option that not are the first,
-
-            //Passing a value that exists in options and is valid, true are wanted
-            string OptionValueMenu = "1";
-            bool TrueResponseMenu = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(OptionValueMenu); 
-            Assert.IsTrue(TrueResponseMenu);
-
-
-            //Passing a value thats not its  method, false its expected,
-            //but this variable can pass in a test, because its a number
-            string OptionValueMenuForError = "444";
-            bool FalseResponseMenu = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(OptionValueMenuForError);
-            Assert.IsFalse(FalseResponseMenu);
-
-
-            //Passing a value thats not is valid in none local of method, false its expected.
-            string OptionsValueMenuForTottalyError = "0.571015";
-            bool FalseTottalyResponseMenu = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(OptionsValueMenuForTottalyError);
-            Assert.IsFalse(FalseTottalyResponseMenu);
+            
 
 
 
@@ -105,24 +86,23 @@ namespace CurrencyAppTests
 
         }
         [TestMethod]
-        public void Test1IfChoiseIsAOptionValid()
+        public void Test1IfChoiseIsAOptionValidFirstMenu()
         {
-            //1°Case: True is waited, because the number are in options and not is a letter
-            string NumberforTest = "2";
-            bool ResultOfTestTrue = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(NumberforTest);
-            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValid, 2);
+            //1°Case: True is waited, because the are in options 
+            string OptionForTest = "All";
+            bool ResultOfTestTrue = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidFirstMenu(OptionForTest);
+            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValidFirstMenu, "All");
             Assert.IsTrue(ResultOfTestTrue);
 
-            //2°Case: False is waited, because this is a number and this method always return false in this codition
-            NumberforTest = "word_testing";
-            bool ResultOfTestFalse = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(NumberforTest);
-            Assert.IsFalse(ResultOfTestFalse);
+            //2°Case: True is waited, because this is are a option valid~SpecificCoin Case 
+            OptionForTest = "SpecificCoin";
+            bool ResultOfTestTrueSpecificCoin= this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidFirstMenu(OptionForTest);
+            Assert.IsTrue(ResultOfTestTrueSpecificCoin);
 
-            //3°Case: False is waited, because the variable its a number
-            //but not is a valid option due a not are available int options
-
-            NumberforTest = "100000";
-            bool ResultOfTestFalseBecauseOfNotAvailable = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandler(NumberforTest);
+            //3°Case: False is waited, because the variable not are in option still
+           
+            OptionForTest = "100000";
+            bool ResultOfTestFalseBecauseOfNotAvailable = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidFirstMenu(OptionForTest);
             Assert.IsFalse(ResultOfTestFalseBecauseOfNotAvailable);
 
 
@@ -162,15 +142,16 @@ namespace CurrencyAppTests
         public void Test2IfChoiseAreInOptions2()
         {
             //test if the method can find out if the number are in options 
+            Dictionary<int, string> DataForCompare = this.CurrencyMenuLogicInstance.OptionsForChoiseJustACoins;
             this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 2;
-            bool response_true= this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu();
+            bool response_true= this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu(DataForCompare);
             Assert.IsTrue(response_true);
 
             //this test has the responsability of force a error and verify if the method
             //can return a waited response that this context is false, because
             //doesn't exists option with value 1000
             this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1000;
-            bool response_false = this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu();
+            bool response_false = this.CurrencyMenuLogicInstance.CheckIfChoiseAreInOptionsMenu(DataForCompare);
             Assert.IsFalse(response_false);
 
             
