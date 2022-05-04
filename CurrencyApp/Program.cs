@@ -4,19 +4,24 @@ using System.Text.Json.Serialization;
 namespace CurrencyApp
 {
     public class CurrencyMenuShow {
-        public static void ShowOptions()
+        public static void ShowOptionsFirstMenu()
         {
             string message = "Suas opções são\n[1]-Mostra a contação de todas as moedas\n[2]-Escolher detalhes de uma moeda especifíca ";
             Console.WriteLine(message);
             Console.Write("Digite a opção escolhida ");
 
         }
+        public static void ShowOptionsSecondMenuSpecificCoin()
+        {
+            string message = "Escolha qual moeda você deseja ver a conversão atual\n[1]USD\n~[2]BTC\n[3]EUR";
+            Console.WriteLine(message);
+        }
         public static void CurrencMenuStart()
         {
             CurrencyMenuShow Menu = new CurrencyMenuShow();
             string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
             Console.WriteLine(message);
-            ShowOptions();
+            
             
 
 
@@ -47,17 +52,23 @@ namespace CurrencyApp
                 
                 string? Choise = Console.ReadLine();
                 
-                    bool Response = this.CheckIfChoiseIsAOptionValidHandler(Choise);
+                    bool Response = this.CheckIfChoiseIsAOptionValidFirstMenu(Choise);
 
                     if (Response)
                     {
-                        Console.WriteLine($"O numero é {this.ChoiseOfUserValidFirstMenu}");
-                        return "pimba";
+                        if (this.ChoiseOfUserValidFirstMenu == "SpecificCoin")
+                        {
+                            CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin();
+                            string MenuChoise = Console.ReadLine();
+                            this.CheckIfChoiseIsAOptionValidHandlerMenu(MenuChoise,this.OptionsForChoiseJustACoins);
+
+                        }
+
                     }
                     else
                     {
                         Console.WriteLine("Digite apenas um valor que esteja nas opções!");
-                        CurrencyMenuShow.ShowOptions();
+                        CurrencyMenuShow.ShowOptionsFirstMenu();
                     }
 
                 
@@ -68,8 +79,15 @@ namespace CurrencyApp
             }
         
 
-
-
+        }
+        public bool CheckIfChoiseIsAOptionValidFirstMenu(string ChoiseOfUser)
+        {
+            if (ChoiseOfUser == this.OptionsFirstMenu["A"] || ChoiseOfUser == this.OptionsFirstMenu["Spec"])
+            {
+                this.ChoiseOfUserValidFirstMenu = ChoiseOfUser;
+                return true;
+            }
+            return false;
         }
         public string MenuOptionCallerApiThatDependOfChoise(ApiConnection ApiForTheCallObject)
         {
@@ -93,24 +111,19 @@ namespace CurrencyApp
             string KeyForApiCall = DataForCompare.GetValueOrDefault(this.ChoiseOfUserValid);
             return KeyForApiCall;
         }
-        public bool CheckIfChoiseIsAOptionValidHandler(string ChoiseOfUser)
+        public bool CheckIfChoiseIsAOptionValidHandlerMenu(string ChoiseOfUser,Dictionary<int,string>DataForCompare)
         {
-            if (ChoiseOfUser == this.OptionsFirstMenu["A"] || ChoiseOfUser ==this.OptionsFirstMenu["Spec"])
-            {
-                this.ChoiseOfUserValidFirstMenu = ChoiseOfUser;
-                return true;
-            }
-            else
-            {
+            
+            
                 bool IsNumber = this.CheckIfChoiseIsNumber(ChoiseOfUser);
                 if (IsNumber)
                 {
-                    bool ItsOptionOrNot = this.CheckIfChoiseAreInOptionsMenu();
+                    bool ItsOptionOrNot = this.CheckIfChoiseAreInOptionsMenu(DataForCompare);
                     return (ItsOptionOrNot ? true : false);
 
                 }
                 return false;
-            }
+            
             
             
             
@@ -135,13 +148,11 @@ namespace CurrencyApp
 
 
         }
-        public bool CheckIfChoiseAreInOptionsMenu(int ItsTheMenuForChoiseACoin=1)
+        public bool CheckIfChoiseAreInOptionsMenu( Dictionary<int,string>DataForCompare)
         {
-            Dictionary<int, string> Options;
+ 
             
-            Options =this.OptionsForChoiseJustACoins;
-            
-            foreach (int option in Options.Keys)
+            foreach (int option in DataForCompare.Keys)
             {
                 if (this.ChoiseOfUserValid == option)
                 {
