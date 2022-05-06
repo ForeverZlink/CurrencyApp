@@ -6,14 +6,14 @@ namespace CurrencyApp
     public class CurrencyMenuShow {
         public static void ShowOptionsFirstMenu()
         {
-            string message = "Suas opções são\n[1]-Mostra a contação de todas as moedas\n[2]-Escolher detalhes de uma moeda especifíca ";
+            string message = "Suas opções são\n[All]-Mostra a contação de todas as moedas\n[SpecificCoin]-Escolher detalhes de uma moeda especifíca ";
             Console.WriteLine(message);
             Console.Write("Digite a opção escolhida ");
 
         }
         public static void ShowOptionsSecondMenuSpecificCoin()
         {
-            string message = "Escolha qual moeda você deseja ver a conversão atual\n[1]USD\n~[2]BTC\n[3]EUR";
+            string message = "Escolha qual moeda você deseja ver a conversão atual\n[1]USD\n[2]BTC\n[3]EUR";
             Console.WriteLine(message);
         }
         public static void CurrencMenuStart()
@@ -45,22 +45,55 @@ namespace CurrencyApp
             {3,"BTCBRL" }
         
         };
+        public bool ReadInputValidation (Dictionary<int,string> OptionWithNewsMenuForValidation)
+        {
+            while (true)
+            {
 
-        public string  ReadInputUserMenu(){
+                string Choise = Console.ReadLine();
+                bool ResponseHandler = this.CheckIfChoiseIsAOptionValidHandlerMenu(Choise, OptionWithNewsMenuForValidation);
+                if (ResponseHandler)
+                {
+
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Opção Errada! Digite apenas os valores aceitos ");
+                    CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin();
+                }
+               
+            }
+           
+        }
+        public  string  ReadInputUserMenuHandler(){
             
-            while (true){   
-                
+            while (true){
+
+                CurrencyMenuShow.ShowOptionsFirstMenu();
                 string? Choise = Console.ReadLine();
                 
                     bool Response = this.CheckIfChoiseIsAOptionValidFirstMenu(Choise);
 
                     if (Response)
                     {
-                        if (this.ChoiseOfUserValidFirstMenu == "SpecificCoin")
+                        
+                        if (this.ChoiseOfUserValidFirstMenu == "All")
                         {
-                            CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin();
-                            string MenuChoise = Console.ReadLine();
-                            this.CheckIfChoiseIsAOptionValidHandlerMenu(MenuChoise,this.OptionsForChoiseJustACoins);
+                        return this.ChoiseOfUserValidFirstMenu;
+                        }
+                        else {
+
+                            if (this.ChoiseOfUserValidFirstMenu == "SpecificCoin")
+                            {
+                                
+                                CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin();
+                                bool ResponseOfValidation = this.ReadInputValidation(this.OptionsForChoiseJustACoins);
+                                
+                                return this.OptionsForChoiseJustACoins.GetValueOrDefault(this.ChoiseOfUserValid);
+                                
+                            }
+
 
                         }
 
@@ -93,17 +126,12 @@ namespace CurrencyApp
         {
 
 
-            if (this.ChoiseOfUserValid == 1)
-            {
-                string ResponseOfApi = ApiForTheCallObject.GetApiResponse();
-                return ResponseOfApi;
-            }
-            else
-            {
-                string KeyForCall = this.TransformOptionNumberInKeyOfDictionary(ApiForTheCallObject.ValuesSupportedForCallApi);
+            
+
                 
-            }
-            return "TEsting";
+            string ResponseOfApi = ApiForTheCallObject.GetApiResponse();
+            return ResponseOfApi;
+            
             
         }
         public string TransformOptionNumberInKeyOfDictionary(Dictionary<int,string> DataForCompare)
@@ -156,6 +184,7 @@ namespace CurrencyApp
             {
                 if (this.ChoiseOfUserValid == option)
                 {
+                    
                     return true;
                 }
             }
@@ -217,7 +246,8 @@ namespace CurrencyApp
             CurrencyMenuShow.CurrencMenuStart();
             CurrencyApiConection CurrencyConectionApiInstance = new CurrencyApiConection();
             CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
-            MenuHandler.ReadInputUserMenu();
+            MenuHandler.ReadInputUserMenuHandler();
+            
             MenuHandler.MenuOptionCallerApiThatDependOfChoise(CurrencyConectionApiInstance);
             
            
