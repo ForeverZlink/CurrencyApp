@@ -130,11 +130,19 @@ namespace CurrencyAppTests
         [TestMethod]
         public void TestMenuOptionCalleThatsDependOfApi()
         {
-            ApiConnection Api = new CurrencyApiConection();
+            CurrencyApiConection  Api = new CurrencyApiConection();
             this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1;
-            string ResponseFirstCall = this.CurrencyMenuLogicInstance.MenuOptionCallerApiThatDependOfChoise(Api);
+
+            string ResponseFirstCall = this.CurrencyMenuLogicInstance.MenuOptionCallerApiFromChoise(Api);
             Assert.IsTrue(ResponseFirstCall.Contains("USD"));
 
+            ///Passing a different argument for the call 
+            ///
+            string EurCoinChoise = "EUR-BRL";
+
+            Api.ConfigArgsAndressOfApi = EurCoinChoise;
+            string ReponseOfSecondCall = this.CurrencyMenuLogicInstance.MenuOptionCallerApiFromChoise(Api);
+            Assert.IsTrue(ReponseOfSecondCall.Contains("EUR"));
             
 
         }

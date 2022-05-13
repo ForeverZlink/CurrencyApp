@@ -122,23 +122,15 @@ namespace CurrencyApp
             }
             return false;
         }
-        public string MenuOptionCallerApiThatDependOfChoise(ApiConnection ApiForTheCallObject)
+        public string MenuOptionCallerApiFromChoise(ApiConnection ApiForTheCallObject)
         {
-
-
-            
-
                 
             string ResponseOfApi = ApiForTheCallObject.GetApiResponse();
             return ResponseOfApi;
             
             
         }
-        public string TransformOptionNumberInKeyOfDictionary(Dictionary<int,string> DataForCompare)
-        {
-            string KeyForApiCall = DataForCompare.GetValueOrDefault(this.ChoiseOfUserValid);
-            return KeyForApiCall;
-        }
+        
         public bool CheckIfChoiseIsAOptionValidHandlerMenu(string ChoiseOfUser,Dictionary<int,string>DataForCompare)
         {
             
@@ -215,11 +207,23 @@ namespace CurrencyApp
 
         HttpClient client = new HttpClient();
         public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/";
+
+
+        public string BaseUrlAndressOfApiWithArgs;
+
+        public string ConfigArgsAndressOfApi { 
+            set {
+                
+                this.BaseUrlAndressOfApiWithArgs= this.BaseUrlAndressOfApi +value;
+            }
         
+        }
+
+
 
         public CurrencyApiConection(string PathUrl = "All")
         {
-            this.BaseUrlAndressOfApi = this.BaseUrlAndressOfApi + PathUrl;
+            this.BaseUrlAndressOfApi = this.BaseUrlAndressOfApi+PathUrl;
         }
         public string GetApiResponse()
         {
@@ -248,11 +252,10 @@ namespace CurrencyApp
             CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
             MenuHandler.ReadInputUserMenuHandler();
             
-            MenuHandler.MenuOptionCallerApiThatDependOfChoise(CurrencyConectionApiInstance);
+            MenuHandler.MenuOptionCallerApiFromChoise(CurrencyConectionApiInstance);
             
-           
             
-            MenuHandler.MenuOptionCallerApiThatDependOfChoise(CurrencyConectionApiInstance);
+            
             CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
             
             CurrencyInstance.CreateJsonDocumentFromApiResult();
