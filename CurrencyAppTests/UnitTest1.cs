@@ -18,14 +18,15 @@ namespace CurrencyAppTests
         public void TestGetterSetterVariable()
         {
             CurrencyApiInstance = new CurrencyApiConection();
-
-            Assert.AreEqual("https://economia.awesomeapi.com.br/All", CurrencyApiInstance.BaseUrlAndressOfApi);
+            CurrencyApiInstance.ConfigArgsAndressOfApi = "All";
+            Assert.AreEqual("https://economia.awesomeapi.com.br/All", CurrencyApiInstance.BaseUrlAndressOfApiWithArgs);
         }
 
         [TestMethod]
         public void TestGetApiResponse()
         {
-            CurrencyApiInstance = new CurrencyApiConection(MainClass.PathUrlRequired);
+            CurrencyApiInstance = new CurrencyApiConection();
+            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
             this.MainClass.ResponseApiResult = CurrencyApiInstance.GetApiResponse();
             string ErrorApiReturn = "404";
             Assert.IsFalse(this.MainClass.ResponseApiResult.Contains(ErrorApiReturn));
@@ -41,9 +42,10 @@ namespace CurrencyAppTests
         [TestMethod]
         public void TestCreateJsonDocument()
         {
-            this.MainClass.PathUrlRequired = "USD-BRL";
-
+            
+           
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
+            CurrencyApiInstance.ConfigArgsAndressOfApi= "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentation = this.MainClass.CreateJsonDocumentFromApiResult();
             Assert.AreEqual("USD", JsonRepresentation[0].GetProperty("code").ToString());
@@ -64,8 +66,9 @@ namespace CurrencyAppTests
         [TestMethod]
         public void TestCheckIfChoiseIsAOptionValidHandlerMenu()
         {
+           
             //TEst verify if the argument of first option , are a option and wanted for a true return, because its option valid 
-            Dictionary<int,string> DataWithSpecificCoinOptions = this.CurrencyMenuLogicInstance.OptionsForChoiseJustACoins;
+            Dictionary<int,string> DataWithSpecificCoinOptions =new Dictionary<int, string> { {1,"USD-BRL"} };
             string Option = "1";
             bool FirstTrueResponseWanted  = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidHandlerMenu(Option,DataWithSpecificCoinOptions);
             Assert.IsTrue(FirstTrueResponseWanted);
@@ -132,7 +135,7 @@ namespace CurrencyAppTests
         {
             CurrencyApiConection  Api = new CurrencyApiConection();
             this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1;
-
+            Api.ConfigArgsAndressOfApi = "USD-BRL";
             string ResponseFirstCall = this.CurrencyMenuLogicInstance.MenuOptionCallerApiFromChoise(Api);
             Assert.IsTrue(ResponseFirstCall.Contains("USD"));
 
