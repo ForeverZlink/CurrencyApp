@@ -46,7 +46,7 @@ namespace CurrencyApp
         public string ChoiseOfUserValidFirstMenu;
         public string ChoiseOfUserKey;
         public Dictionary<string,string> OptionsFirstMenu= new Dictionary< string,string> {
-            { "A","All"},{"Spec","SpecificCoin"}};
+            { "A","ALL"},{"Spec","SPECIFICCOIN"}};
 
         public  Dictionary<int, string> OptionsForChoiseJustACoins;
         public  Dictionary<int, string> SecondMenu
@@ -81,20 +81,20 @@ namespace CurrencyApp
             while (true){
 
                 CurrencyMenuShow.ShowOptionsFirstMenu();
-                string? Choise = Console.ReadLine();
+                string? Choise = Console.ReadLine().ToUpper();
                 
                     bool Response = this.CheckIfChoiseIsAOptionValidFirstMenu(Choise);
 
                     if (Response)
                     {
                         
-                        if (this.ChoiseOfUserValidFirstMenu == "All")
+                        if (this.ChoiseOfUserValidFirstMenu == "ALL")
                         {
                         return this.ChoiseOfUserValidFirstMenu;
                         }
                         else {
 
-                            if (this.ChoiseOfUserValidFirstMenu == "SpecificCoin")
+                        if (this.ChoiseOfUserValidFirstMenu == "SPECIFICCOIN")
                             {
                                 CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin(this.SecondMenu);
                                 bool ResponseOfValidation = this.ReadInputValidation(this.SecondMenu);
