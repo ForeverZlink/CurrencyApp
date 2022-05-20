@@ -13,16 +13,42 @@ namespace CurrencyApp
 
         }
 
-        public static void ShowOptionsSecondMenuSpecificCoin(Dictionary<int,string> Coins)
+        public static void ShowOptionsSecondMenuSpecificCoin(Dictionary<int, string> Coins)
         {
             string Message = "Escolha uma das opções abaixo!\n";
-            
+
             foreach (var coin in Coins)
             {
                 Message += $"[{coin.Key}]{coin.Value}\n";
             }
             Console.WriteLine(Message);
+
         }
+        public static void ShowDetailsOfCoinFromJson(JsonElement JsonToUse)
+        {
+
+            string CodeOfTheCoinForConversion = JsonToUse[0].GetProperty("code").ToString();
+            string CodeOfTheCoinConversed = JsonToUse[0].GetProperty("codein").ToString();
+            string NameOfConversion = JsonToUse[0].GetProperty("name").ToString();
+            string HighestPriceOfTheDay = JsonToUse[0].GetProperty("high").ToString();
+            string LowestPriceOfTHeDay = JsonToUse[0].GetProperty("low").ToString();
+            string TextWithInformations = $"Código da moeda que será convertida: {CodeOfTheCoinForConversion}\n" +
+                $"Código da moeda para qual vai ser feita a conversão: {CodeOfTheCoinConversed}\n" +
+                $"Nome da conversão: {NameOfConversion}\n" +
+                $"Maior preço diário: R${HighestPriceOfTheDay}\n" +
+                $"Menor preço diário: R${LowestPriceOfTHeDay}";
+            Console.WriteLine("-=================================================================-");
+            Console.WriteLine(TextWithInformations);
+       
+        }
+
+    
+
+
+    
+
+
+
         public static void CurrencMenuStart()
         {
             CurrencyMenuShow Menu = new CurrencyMenuShow();
@@ -269,7 +295,8 @@ namespace CurrencyApp
             
             CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
             
-            CurrencyInstance.CreateJsonDocumentFromApiResult();
+            JsonElement DataJson = CurrencyInstance.CreateJsonDocumentFromApiResult();
+            CurrencyMenuShow.ShowDetailsOfCoinFromJson(DataJson);
             Console.ReadLine();
             
             

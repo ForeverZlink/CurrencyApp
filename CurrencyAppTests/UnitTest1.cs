@@ -59,6 +59,23 @@ namespace CurrencyAppTests
 
     }
     [TestClass]
+    public class CurrencyMenuShowTest
+    {
+        Currency MainClass = new Currency();
+        public CurrencyApiConection? CurrencyApiInstance;
+        
+        [TestMethod]
+        public void TestShowDetailsOfCoinFromJson()
+        {
+            CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
+            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
+            this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
+            JsonElement JsonRepresentation = this.MainClass.CreateJsonDocumentFromApiResult();
+            CurrencyMenuShow.ShowDetailsOfCoinFromJson(JsonRepresentation);
+
+        }
+    }
+    [TestClass]
     public class CurrencyHandlerLogicTest
     {
         CurrencyMenuHandlerLogic CurrencyMenuLogicInstance = new CurrencyMenuHandlerLogic();
@@ -92,13 +109,13 @@ namespace CurrencyAppTests
         public void Test1IfChoiseIsAOptionValidFirstMenu()
         {
             //1°Case: True is waited, because the are in options 
-            string OptionForTest = "All";
+            string OptionForTest = "ALL";
             bool ResultOfTestTrue = this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidFirstMenu(OptionForTest);
-            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValidFirstMenu, "All");
+            Assert.AreEqual(this.CurrencyMenuLogicInstance.ChoiseOfUserValidFirstMenu, "ALL");
             Assert.IsTrue(ResultOfTestTrue);
 
             //2°Case: True is waited, because this is are a option valid~SpecificCoin Case 
-            OptionForTest = "SpecificCoin";
+            OptionForTest = "SPECIFICCOIN";
             bool ResultOfTestTrueSpecificCoin= this.CurrencyMenuLogicInstance.CheckIfChoiseIsAOptionValidFirstMenu(OptionForTest);
             Assert.IsTrue(ResultOfTestTrueSpecificCoin);
 
