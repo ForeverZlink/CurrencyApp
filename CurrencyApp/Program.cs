@@ -7,7 +7,7 @@ namespace CurrencyApp
         public static void ShowOptionsFirstMenu()
         {
 
-            string message = "Suas opções são\n[All]-Mostra a contação de todas as moedas\n[SpecificCoin]-Escolher detalhes de uma moeda especifíca ";
+            string message = "Suas opções são\n[All]-Mostra a contação de todas as moedas\n[SpecificCoin]-Escolher detalhes de uma moeda especifíca\n[Exit]Fecha o programa ";
             Console.WriteLine(message);
             Console.Write("Digite a opção escolhida ");
 
@@ -71,8 +71,8 @@ namespace CurrencyApp
         public int ChoiseOfUserValid;
         public string ChoiseOfUserValidFirstMenu;
         public string ChoiseOfUserKey;
-        public Dictionary<string,string> OptionsFirstMenu= new Dictionary< string,string> {
-            { "A","ALL"},{"Spec","SPECIFICCOIN"}};
+        public Dictionary<string,string> OptionsFirstMenu= new Dictionary<string, string> {
+            { "A","ALL"},{"Spec","SPECIFICCOIN"}, {"E","EXIT"}};
 
         public  Dictionary<int, string> OptionsForChoiseJustACoins;
         public  Dictionary<int, string> SecondMenu
@@ -120,14 +120,14 @@ namespace CurrencyApp
                         }
                         else {
 
-                        if (this.ChoiseOfUserValidFirstMenu == "SPECIFICCOIN")
-                            {
-                                CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin(this.SecondMenu);
-                                bool ResponseOfValidation = this.ReadInputValidation(this.SecondMenu);
+                            if (this.ChoiseOfUserValidFirstMenu == "SPECIFICCOIN")
+                                {
+                                    CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin(this.SecondMenu);
+                                    bool ResponseOfValidation = this.ReadInputValidation(this.SecondMenu);
                                 
-                                return this.OptionsForChoiseJustACoins.GetValueOrDefault(this.ChoiseOfUserValid);
+                                    return this.OptionsForChoiseJustACoins.GetValueOrDefault(this.ChoiseOfUserValid);
                                 
-                            }
+                                }
 
 
                         }
@@ -150,11 +150,19 @@ namespace CurrencyApp
         }
         public bool CheckIfChoiseIsAOptionValidFirstMenu(string ChoiseOfUser)
         {
-            if (ChoiseOfUser == this.OptionsFirstMenu["A"] || ChoiseOfUser == this.OptionsFirstMenu["Spec"])
+            foreach(var option in OptionsFirstMenu.Values)
             {
-                this.ChoiseOfUserValidFirstMenu = ChoiseOfUser;
-                return true;
+                if (option==ChoiseOfUser)
+                {
+                    if (option == "EXIT")
+                    {
+                        Environment.Exit(0);
+                    }
+                    this.ChoiseOfUserValidFirstMenu = ChoiseOfUser;
+                    return true;
+                }
             }
+            
             return false;
         }
         public string MenuOptionCallerApiFromChoise(ApiConnection ApiForTheCallObject)
@@ -281,23 +289,27 @@ namespace CurrencyApp
         public static void Main(string[] args)
         {
             Currency CurrencyInstance= new Currency();
+            while (true)
+            {
+                CurrencyMenuShow.CurrencMenuStart();
+                CurrencyApiConection CurrencyConectionApiInstance = new CurrencyApiConection();
+                CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
+                MenuHandler.SecondMenu = CurrencyConectionApiInstance.ValuesSupportedForCallApi;
+                string KeyChoised = MenuHandler.ReadInputUserMenuHandler();
+                CurrencyConectionApiInstance.ConfigArgsAndressOfApi = KeyChoised;
+                Console.WriteLine(CurrencyConectionApiInstance.BaseUrlAndressOfApiWithArgs);
+                MenuHandler.MenuOptionCallerApiFromChoise(CurrencyConectionApiInstance);
             
-            CurrencyMenuShow.CurrencMenuStart();
-            CurrencyApiConection CurrencyConectionApiInstance = new CurrencyApiConection();
-            CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
-            MenuHandler.SecondMenu = CurrencyConectionApiInstance.ValuesSupportedForCallApi;
-            string KeyChoised = MenuHandler.ReadInputUserMenuHandler();
-            CurrencyConectionApiInstance.ConfigArgsAndressOfApi = KeyChoised;
-            Console.WriteLine(CurrencyConectionApiInstance.BaseUrlAndressOfApiWithArgs);
-            MenuHandler.MenuOptionCallerApiFromChoise(CurrencyConectionApiInstance);
             
             
+                CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
             
-            CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
+                JsonElement DataJson = CurrencyInstance.CreateJsonDocumentFromApiResult();
+                CurrencyMenuShow.ShowDetailsOfCoinFromJson(DataJson);
+                Console.ReadLine();
             
-            JsonElement DataJson = CurrencyInstance.CreateJsonDocumentFromApiResult();
-            CurrencyMenuShow.ShowDetailsOfCoinFromJson(DataJson);
-            Console.ReadLine();
+
+            }
             
             
         } 
