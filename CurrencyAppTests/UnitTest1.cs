@@ -19,7 +19,7 @@ namespace CurrencyAppTests
         {
             CurrencyApiInstance = new CurrencyApiConection();
             CurrencyApiInstance.ConfigArgsAndressOfApi = "All";
-            Assert.AreEqual("https://economia.awesomeapi.com.br/All", CurrencyApiInstance.BaseUrlAndressOfApiWithArgs);
+            Assert.AreEqual("https://economia.awesomeapi.com.br/last/All", CurrencyApiInstance.BaseUrlAndressOfApiWithArgs);
         }
 
         [TestMethod]
@@ -48,12 +48,22 @@ namespace CurrencyAppTests
             CurrencyApiInstance.ConfigArgsAndressOfApi= "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentation = this.MainClass.CreateJsonDocumentFromApiResult();
-            Assert.AreEqual("USD", JsonRepresentation[0].GetProperty("code").ToString());
+            Assert.AreEqual("USD", JsonRepresentation.GetProperty("USDBRL").GetProperty("code").ToString());
 
 
 
 
 
+
+        }
+        [TestMethod]
+        public void TestDeserializeJsonDocumentFromApiResult()
+        {
+            CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
+            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
+            this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
+            Dictionary<string, Dictionary<string, string>> Coin = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            Assert.AreEqual("USD", Coin.GetValueOrDefault("USDBRL").GetValueOrDefault("code").ToString());
 
         }
 
@@ -70,8 +80,9 @@ namespace CurrencyAppTests
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
             CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
-            JsonElement JsonRepresentation = this.MainClass.CreateJsonDocumentFromApiResult();
-            CurrencyMenuShow.ShowDetailsOfCoinFromJson(JsonRepresentation);
+            Dictionary<string, Dictionary<string, string>> JsonRepresentation = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            CurrencyMenuShow.ShowDetailsFromJsonDeserialized(JsonRepresentation);
+            
 
         }
     }
@@ -105,6 +116,7 @@ namespace CurrencyAppTests
 
 
         }
+    
         [TestMethod]
         public void Test1IfChoiseIsAOptionValidFirstMenu()
         {

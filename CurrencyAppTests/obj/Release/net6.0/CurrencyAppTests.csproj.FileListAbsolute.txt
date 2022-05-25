@@ -102,9 +102,3 @@ C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyAppTests\obj\
 C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.pdb
 C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.genruntimeconfig.cache
 C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyAppTests\obj\Release\net6.0\ref\CurrencyAppTests.dll
-C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyApp\CurrencyAppTests\bin\Release\net6.0\CoverletSourceRootsMapping
-C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyApp\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.csproj.AssemblyReference.cache
-C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyApp\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyApp\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.AssemblyInfoInputs.cache
-C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyApp\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.AssemblyInfo.cs
-C:\Users\carlos h\Downloads\Programação\Programas Prompt\CurrencyApp\CurrencyAppTests\obj\Release\net6.0\CurrencyAppTests.csproj.CoreCompileInputs.cache

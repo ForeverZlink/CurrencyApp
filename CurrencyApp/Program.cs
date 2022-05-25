@@ -24,22 +24,31 @@ namespace CurrencyApp
             Console.WriteLine(Message);
 
         }
-        public static void ShowDetailsOfCoinFromJson(JsonElement JsonToUse)
+        public static void ShowDetailsFromJsonDeserialized(Dictionary<string, Dictionary<string, string>> JsonDesiarilized)
         {
 
-            string CodeOfTheCoinForConversion = JsonToUse[0].GetProperty("code").ToString();
-            string CodeOfTheCoinConversed = JsonToUse[0].GetProperty("codein").ToString();
-            string NameOfConversion = JsonToUse[0].GetProperty("name").ToString();
-            string HighestPriceOfTheDay = JsonToUse[0].GetProperty("high").ToString();
-            string LowestPriceOfTHeDay = JsonToUse[0].GetProperty("low").ToString();
-            string TextWithInformations = $"Código da moeda que será convertida: {CodeOfTheCoinForConversion}\n" +
-                $"Código da moeda para qual vai ser feita a conversão: {CodeOfTheCoinConversed}\n" +
-                $"Nome da conversão: {NameOfConversion}\n" +
-                $"Maior preço diário: R${HighestPriceOfTheDay}\n" +
-                $"Menor preço diário: R${LowestPriceOfTHeDay}";
-            Console.WriteLine("-=================================================================-");
-            Console.WriteLine(TextWithInformations);
-       
+
+            
+            foreach (var Coin in JsonDesiarilized.Values)
+            {
+                string CodeOfTheCoinForConversion = Coin.GetValueOrDefault("code").ToString();
+                string CodeOfTheCoinConversed = Coin.GetValueOrDefault("codein").ToString();
+                string NameOfConversion = Coin.GetValueOrDefault("name").ToString();
+                string HighestPriceOfTheDay = Coin.GetValueOrDefault("high").ToString();
+                string LowestPriceOfTHeDay = Coin.GetValueOrDefault("low").ToString();
+                string TextWithInformations = $"Código da moeda que será convertida: {CodeOfTheCoinForConversion}\n" +
+                    $"Código da moeda para qual vai ser feita a conversão: {CodeOfTheCoinConversed}\n" +
+                    $"Nome da conversão: {NameOfConversion}\n" +
+                    $"Maior preço diário: R${HighestPriceOfTheDay}\n" +
+                    $"Menor preço diário: R${LowestPriceOfTHeDay}";
+
+                Console.WriteLine("-=================================================================-");
+                Console.WriteLine(TextWithInformations);
+            }
+                
+            
+            
+         
         }
 
     
@@ -64,6 +73,7 @@ namespace CurrencyApp
     public interface ApiConnection
     {
         public Dictionary<int, string> ValuesSupportedForCallApi { get;  }
+        
         public string GetApiResponse();
     }
     public class CurrencyMenuHandlerLogic{
@@ -235,10 +245,11 @@ namespace CurrencyApp
     {
         public string AllCoins = "All";
 
-        static Dictionary<int, string> Coins = new Dictionary<int, string>
+        public static Dictionary<int, string> Coins = new Dictionary<int, string>
         {
             {1,"USD-BRL" },
             {2,"EUR-BRL" },
+            {3,"BTC-BRL" }
 
 
         };
@@ -249,7 +260,7 @@ namespace CurrencyApp
 
 
         HttpClient client = new HttpClient();
-        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/";
+        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/last/";
 
 
         public string BaseUrlAndressOfApiWithArgs;
@@ -276,7 +287,8 @@ namespace CurrencyApp
         
     }
     
-    
+
+
     public class Currency
     {
         public string PathUrlRequired="USD-BRL";
@@ -289,6 +301,8 @@ namespace CurrencyApp
         public static void Main(string[] args)
         {
             Currency CurrencyInstance= new Currency();
+            CurrencyApiConection CoinsSupportedForApi = new CurrencyApiConection();
+            
             while (true)
             {
                 CurrencyMenuShow.CurrencMenuStart();
@@ -297,22 +311,29 @@ namespace CurrencyApp
                 MenuHandler.SecondMenu = CurrencyConectionApiInstance.ValuesSupportedForCallApi;
                 string KeyChoised = MenuHandler.ReadInputUserMenuHandler();
                 CurrencyConectionApiInstance.ConfigArgsAndressOfApi = KeyChoised;
-                Console.WriteLine(CurrencyConectionApiInstance.BaseUrlAndressOfApiWithArgs);
+                
                 MenuHandler.MenuOptionCallerApiFromChoise(CurrencyConectionApiInstance);
             
             
             
                 CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
-            
-                JsonElement DataJson = CurrencyInstance.CreateJsonDocumentFromApiResult();
-                CurrencyMenuShow.ShowDetailsOfCoinFromJson(DataJson);
+                Console.WriteLine(CurrencyInstance.ResponseApiResult);
+                Dictionary<string, Dictionary<string, string>> Coin =   CurrencyInstance.DeserializeJsonDocumentFromApiResult();
+                
+                CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin);
                 Console.ReadLine();
             
 
             }
             
             
-        } 
+        }
+
+        public Dictionary<string, Dictionary<string, string>> DeserializeJsonDocumentFromApiResult()
+        {
+            Dictionary<string,Dictionary<string,string>> Coin = JsonSerializer.Deserialize<Dictionary<string,Dictionary<string,string>>>(this.ResponseApiResult);
+            return Coin;
+        }
         public JsonElement CreateJsonDocumentFromApiResult()
         {
             JsonDocument DocumentJson;
@@ -328,7 +349,7 @@ namespace CurrencyApp
             
 
             JsonElement JsonRepresentation = DocumentJson.RootElement;
-            Console.WriteLine(JsonRepresentation);
+            
 
             return JsonRepresentation;
         }
