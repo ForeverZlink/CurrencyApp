@@ -15,6 +15,7 @@ namespace CurrencyApp
 
         public static void ShowOptionsSecondMenuSpecificCoin(Dictionary<int, string> Coins)
         {
+            Console.WriteLine("---------------------------------------------------");
             string Message = "Escolha uma das opções abaixo!\n";
 
             foreach (var coin in Coins)
@@ -22,6 +23,7 @@ namespace CurrencyApp
                 Message += $"[{coin.Key}]{coin.Value}\n";
             }
             Console.WriteLine(Message);
+            Console.Write("Qual a opção desejada? ");
 
         }
         public static void ShowDetailsFromJsonDeserialized(Dictionary<string, Dictionary<string, string>> JsonDesiarilized)
@@ -44,6 +46,7 @@ namespace CurrencyApp
 
                 Console.WriteLine("-=================================================================-");
                 Console.WriteLine(TextWithInformations);
+                Console.WriteLine("===================================================================");
             }
                 
             
@@ -317,11 +320,11 @@ namespace CurrencyApp
             
             
                 CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
-                Console.WriteLine(CurrencyInstance.ResponseApiResult);
+                
                 Dictionary<string, Dictionary<string, string>> Coin =   CurrencyInstance.DeserializeJsonDocumentFromApiResult();
                 
                 CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin);
-                Console.ReadLine();
+                
             
 
             }
