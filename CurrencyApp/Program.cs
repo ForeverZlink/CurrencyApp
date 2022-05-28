@@ -325,6 +325,7 @@ namespace CurrencyApp
                 
                 CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin);
                 
+                
             
 
             }
