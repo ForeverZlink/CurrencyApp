@@ -4,12 +4,21 @@ using System.Text.Json.Serialization;
 namespace CurrencyApp
 {
     public class CurrencyMenuShow {
+
+
+        // Static constructor is called at most one time, before any
+        // instance constructor is invoked or member is accessed.
+        static CurrencyMenuShow()
+        {
+            string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
+            Console.WriteLine(message);
+        }
         public static void ShowOptionsFirstMenu()
         {
 
             string message = "Suas opções são\n[All]-Mostra a contação de todas as moedas\n[SpecificCoin]-Escolher detalhes de uma moeda especifíca\n[Exit]Fecha o programa ";
             Console.WriteLine(message);
-            Console.Write("Digite a opção escolhida ");
+            Console.Write("Digite a opção escolhida: ");
 
         }
 
@@ -61,17 +70,7 @@ namespace CurrencyApp
 
 
 
-        public static void CurrencMenuStart()
-        {
-            CurrencyMenuShow Menu = new CurrencyMenuShow();
-            string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
-            Console.WriteLine(message);
-            
-            
-
-
-
-        }
+       
     }
     public interface ApiConnection
     {
@@ -88,6 +87,10 @@ namespace CurrencyApp
             { "A","ALL"},{"Spec","SPECIFICCOIN"}, {"E","EXIT"}};
 
         public  Dictionary<int, string> OptionsForChoiseJustACoins;
+        public  Dictionary<int, string> AllCoins
+        {
+            get { return this.OptionsForChoiseJustACoins; }
+        }
         public  Dictionary<int, string> SecondMenu
         {
             get { return this.OptionsForChoiseJustACoins; }
@@ -115,6 +118,16 @@ namespace CurrencyApp
             }
            
         }
+        public string ReturnAllCoinsSupportedAsStringForApiCall() {
+
+            string PathWithAllCoins = "";
+            foreach(string coin in this.OptionsForChoiseJustACoins.Values)
+            {
+                 PathWithAllCoins += $"{coin},";
+            }
+            PathWithAllCoins = PathWithAllCoins.Remove(PathWithAllCoins.Length-1);
+            return PathWithAllCoins;
+        }
         public  string  ReadInputUserMenuHandler(){
             
             while (true){
@@ -129,7 +142,7 @@ namespace CurrencyApp
                         
                         if (this.ChoiseOfUserValidFirstMenu == "ALL")
                         {
-                        return this.ChoiseOfUserValidFirstMenu;
+                            return this.ReturnAllCoinsSupportedAsStringForApiCall();
                         }
                         else {
 
@@ -308,7 +321,7 @@ namespace CurrencyApp
             
             while (true)
             {
-                CurrencyMenuShow.CurrencMenuStart();
+                
                 CurrencyApiConection CurrencyConectionApiInstance = new CurrencyApiConection();
                 CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
                 MenuHandler.SecondMenu = CurrencyConectionApiInstance.ValuesSupportedForCallApi;
@@ -324,7 +337,6 @@ namespace CurrencyApp
                 Dictionary<string, Dictionary<string, string>> Coin =   CurrencyInstance.DeserializeJsonDocumentFromApiResult();
                 
                 CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin);
-                
                 
             
 

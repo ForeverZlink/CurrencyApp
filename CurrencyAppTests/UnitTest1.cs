@@ -90,7 +90,20 @@ namespace CurrencyAppTests
     public class CurrencyHandlerLogicTest
     {
         CurrencyMenuHandlerLogic CurrencyMenuLogicInstance = new CurrencyMenuHandlerLogic();
+        CurrencyApiConection CurrencyApiInstance = new CurrencyApiConection();
 
+        [TestMethod]
+        public void TestReturnAllCoinsSupportedAsStringForApiCall()
+        {
+            this.CurrencyMenuLogicInstance.SecondMenu = new Dictionary<int, string> { { 1, "USD-BRL" }, { 2, "BTC-BRL" } };
+            string AllCoins = this.CurrencyMenuLogicInstance.ReturnAllCoinsSupportedAsStringForApiCall();
+            string MessageWanted = "USD-BRL,BTC-BRL";
+            Assert.AreEqual(AllCoins, MessageWanted);
+            this.CurrencyApiInstance.ConfigArgsAndressOfApi = AllCoins;
+
+            string ResultOfCallApi = this.CurrencyApiInstance.GetApiResponse();
+            Console.WriteLine(ResultOfCallApi);
+        }
         [TestMethod]
         public void TestCheckIfChoiseIsAOptionValidHandlerMenu()
         {
