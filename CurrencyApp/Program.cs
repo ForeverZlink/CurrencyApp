@@ -198,6 +198,10 @@ namespace CurrencyApp
         
 
         }
+
+        public void MoreDetailsForTheSpoeificoinCoin() { 
+
+        }
         public bool CheckIfChoiseIsAOptionValidFirstMenu(string ChoiseOfUser)
         {
             foreach(var option in OptionsFirstMenu.Values)
