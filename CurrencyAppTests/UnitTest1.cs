@@ -86,6 +86,7 @@ namespace CurrencyAppTests
             CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentationWithJustACoin = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            Assert.AreEqual(JsonRepresentationWithJustACoin.GetProperty("USDBRL").GetProperty("code").ToString(),"USD");
             List<string> Coins = new List<string>();
             Coins.Add("USDBRL");
             CurrencyMenuShow.ShowDetailsFromJsonDeserialized(JsonRepresentationWithJustACoin,Coins);
@@ -94,6 +95,8 @@ namespace CurrencyAppTests
             CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL,BTC-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentationWithMoreCoin = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            Assert.AreEqual(JsonRepresentationWithMoreCoin.GetProperty("USDBRL").GetProperty("code").ToString(), "USD");
+
             List<string> ManyCoins = new List<string>();
             ManyCoins.Add("USDBRL");
             ManyCoins.Add("BTCBRL");
