@@ -62,8 +62,12 @@ namespace CurrencyAppTests
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
             CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
-            Dictionary<string, Dictionary<string, string>> Coin = this.MainClass.DeserializeJsonDocumentFromApiResult();
-            Assert.AreEqual("USD", Coin.GetValueOrDefault("USDBRL").GetValueOrDefault("code").ToString());
+            JsonElement Coin = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            Assert.AreEqual("USD", Coin.GetProperty("USDBRL").GetProperty("code").ToString());
+
+            JsonElement test = JsonSerializer.Deserialize<JsonElement>(this.MainClass.ResponseApiResult);
+            string Coins = "USDBRL";
+            Console.WriteLine(test.GetProperty(Coins).GetProperty("code"));
 
         }
 
@@ -77,13 +81,23 @@ namespace CurrencyAppTests
         [TestMethod]
         public void TestShowDetailsOfCoinFromJson()
         {
+            //Show just a coin
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
             CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
-            Dictionary<string, Dictionary<string, string>> JsonRepresentation = this.MainClass.DeserializeJsonDocumentFromApiResult();
-            CurrencyMenuShow.ShowDetailsFromJsonDeserialized(JsonRepresentation);
-            
+            JsonElement JsonRepresentationWithJustACoin = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            List<string> Coins = new List<string>();
+            Coins.Add("USDBRL");
+            CurrencyMenuShow.ShowDetailsFromJsonDeserialized(JsonRepresentationWithJustACoin,Coins);
 
+            //Show with all Coins;
+            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL,BTC-BRL";
+            this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
+            JsonElement JsonRepresentationWithMoreCoin = this.MainClass.DeserializeJsonDocumentFromApiResult();
+            List<string> ManyCoins = new List<string>();
+            ManyCoins.Add("USDBRL");
+            ManyCoins.Add("BTCBRL");
+            CurrencyMenuShow.ShowDetailsFromJsonDeserialized(JsonRepresentationWithMoreCoin, ManyCoins);
         }
     }
     [TestClass]

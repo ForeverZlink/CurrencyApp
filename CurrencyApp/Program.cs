@@ -35,18 +35,17 @@ namespace CurrencyApp
             Console.Write("Qual a opção desejada? ");
 
         }
-        public static void ShowDetailsFromJsonDeserialized(Dictionary<string, Dictionary<string, string>> JsonDesiarilized)
+        public static void ShowDetailsFromJsonDeserialized(JsonElement JsonDesiarilized,List<string> CoinsForShow)
         {
 
-
-            
-            foreach (var Coin in JsonDesiarilized.Values)
+            foreach (var Coin in CoinsForShow)
             {
-                string CodeOfTheCoinForConversion = Coin.GetValueOrDefault("code").ToString();
-                string CodeOfTheCoinConversed = Coin.GetValueOrDefault("codein").ToString();
-                string NameOfConversion = Coin.GetValueOrDefault("name").ToString();
-                string HighestPriceOfTheDay = Coin.GetValueOrDefault("high").ToString();
-                string LowestPriceOfTHeDay = Coin.GetValueOrDefault("low").ToString();
+
+                string CodeOfTheCoinForConversion = JsonDesiarilized.GetProperty(Coin).GetProperty("code").ToString();
+                string CodeOfTheCoinConversed = JsonDesiarilized.GetProperty(Coin).GetProperty("codein").ToString();
+                string NameOfConversion = JsonDesiarilized.GetProperty(Coin).GetProperty("name").ToString();
+                string HighestPriceOfTheDay = JsonDesiarilized.GetProperty(Coin).GetProperty("high").ToString();
+                string LowestPriceOfTHeDay = JsonDesiarilized.GetProperty(Coin).GetProperty("low").ToString();
                 string TextWithInformations = $"Código da moeda que será convertida: {CodeOfTheCoinForConversion}\n" +
                     $"Código da moeda para qual vai ser feita a conversão: {CodeOfTheCoinConversed}\n" +
                     $"Nome da conversão: {NameOfConversion}\n" +
@@ -57,6 +56,9 @@ namespace CurrencyApp
                 Console.WriteLine(TextWithInformations);
                 Console.WriteLine("===================================================================");
             }
+        }
+            
+                
                 
             
             
@@ -71,7 +73,7 @@ namespace CurrencyApp
 
 
        
-    }
+    
     public interface ApiConnection
     {
         public Dictionary<int, string> ValuesSupportedForCallApi { get;  }
@@ -83,10 +85,13 @@ namespace CurrencyApp
         public int ChoiseOfUserValid;
         public string ChoiseOfUserValidFirstMenu;
         public string ChoiseOfUserKey;
+        public string ChoiseOfUserWithTheName;
+        public List<string> ListWithAllParametersChoised = new List<string>();
         public Dictionary<string,string> OptionsFirstMenu= new Dictionary<string, string> {
             { "A","ALL"},{"Spec","SPECIFICCOIN"}, {"E","EXIT"}};
 
         public  Dictionary<int, string> OptionsForChoiseJustACoins;
+
         public  Dictionary<int, string> AllCoins
         {
             get { return this.OptionsForChoiseJustACoins; }
@@ -128,6 +133,11 @@ namespace CurrencyApp
             PathWithAllCoins = PathWithAllCoins.Remove(PathWithAllCoins.Length-1);
             return PathWithAllCoins;
         }
+        public string RemoveTheTraceOfAOptionBecauseTheKeyInJsonDoNotHave(string raw)
+        {
+            string WithoutYrace = raw.Replace("-", "");
+            return WithoutYrace;
+        }
         public  string  ReadInputUserMenuHandler(){
             
             while (true){
@@ -142,16 +152,30 @@ namespace CurrencyApp
                         
                         if (this.ChoiseOfUserValidFirstMenu == "ALL")
                         {
+                            this.ListWithAllParametersChoised.Clear();
+                            foreach(var CoinName in this.AllCoins.Values)
+                            {
+                            
+                            
+                            this.ListWithAllParametersChoised.Add(this.RemoveTheTraceOfAOptionBecauseTheKeyInJsonDoNotHave(CoinName));
+                             
+                            }
+                            
                             return this.ReturnAllCoinsSupportedAsStringForApiCall();
                         }
                         else {
 
                             if (this.ChoiseOfUserValidFirstMenu == "SPECIFICCOIN")
                                 {
+                                    
                                     CurrencyMenuShow.ShowOptionsSecondMenuSpecificCoin(this.SecondMenu);
                                     bool ResponseOfValidation = this.ReadInputValidation(this.SecondMenu);
-                                
-                                    return this.OptionsForChoiseJustACoins.GetValueOrDefault(this.ChoiseOfUserValid);
+                                    this.ChoiseOfUserWithTheName = this.OptionsForChoiseJustACoins.GetValueOrDefault(this.ChoiseOfUserValid);
+                                    this.ListWithAllParametersChoised.Clear();
+                                    
+                                    this.ListWithAllParametersChoised.Add(this.RemoveTheTraceOfAOptionBecauseTheKeyInJsonDoNotHave(this.ChoiseOfUserWithTheName));
+                                    
+                                    return this.ChoiseOfUserWithTheName;
                                 
                                 }
 
@@ -334,9 +358,9 @@ namespace CurrencyApp
             
                 CurrencyInstance.ResponseApiResult = CurrencyConectionApiInstance.GetApiResponse();
                 
-                Dictionary<string, Dictionary<string, string>> Coin =   CurrencyInstance.DeserializeJsonDocumentFromApiResult();
-                
-                CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin);
+                JsonElement Coin =   CurrencyInstance.DeserializeJsonDocumentFromApiResult();
+
+                CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin, MenuHandler.ListWithAllParametersChoised);
                 
             
 
@@ -345,9 +369,9 @@ namespace CurrencyApp
             
         }
 
-        public Dictionary<string, Dictionary<string, string>> DeserializeJsonDocumentFromApiResult()
+        public JsonElement DeserializeJsonDocumentFromApiResult()
         {
-            Dictionary<string,Dictionary<string,string>> Coin = JsonSerializer.Deserialize<Dictionary<string,Dictionary<string,string>>>(this.ResponseApiResult);
+            JsonElement Coin = JsonSerializer.Deserialize<JsonElement>(this.ResponseApiResult);
             return Coin;
         }
         public JsonElement CreateJsonDocumentFromApiResult()
