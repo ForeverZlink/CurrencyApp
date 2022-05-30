@@ -198,9 +198,12 @@ namespace CurrencyApp
         
 
         }
+        public void MenuWithMoreOptionsForDetailsOfTheASpecificCoin()
+        {
 
-        public void MoreDetailsForTheSpoeificoinCoin() { 
-
+        }
+        public void MoreDetailsForTheSpoeificoinCoin() {
+            //Will 
         }
         public bool CheckIfChoiseIsAOptionValidFirstMenu(string ChoiseOfUser)
         {
