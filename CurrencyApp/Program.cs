@@ -13,6 +13,24 @@ namespace CurrencyApp
             string message = "Bem vindo ao nosso conversor de moedas e a cotação atual de diversas moedas no mundo";
             Console.WriteLine(message);
         }
+        public static void WonderQuantity()
+        {
+            string message = "Qual é valor que você deseja? R$";
+            Console.Write(message);
+        }
+        public static void ShowMOneyConverted(JsonElement JsonDesiarilized, List<string> CoinsForShow)
+        {
+            foreach (var Coin in CoinsForShow){
+                string message = $"Nome da moeda convertida {JsonDesiarilized.GetProperty(Coin).GetProperty("code")}, Preço com a quantidade escolhida:{JsonDesiarilized.GetProperty(Coin).GetProperty("bid")}";
+                Console.WriteLine(message);
+            }
+           
+        }
+        public static void ShowOptionsThirdMenu()
+        {
+            string message = "Você deseja ver uma versa com moeda/as que você escolheu, mas mostrando com alguma quantidade específica? Digite apenas Yes/No:";
+            Console.Write(message);
+        }
         public static void ShowOptionsFirstMenu()
         {
 
@@ -89,7 +107,7 @@ namespace CurrencyApp
         public List<string> ListWithAllParametersChoised = new List<string>();
         public Dictionary<string,string> OptionsFirstMenu= new Dictionary<string, string> {
             { "A","ALL"},{"Spec","SPECIFICCOIN"}, {"E","EXIT"}};
-
+       
         public  Dictionary<int, string> OptionsForChoiseJustACoins;
 
         public  Dictionary<int, string> AllCoins
@@ -198,13 +216,52 @@ namespace CurrencyApp
         
 
         }
-        public void MenuWithMoreOptionsForDetailsOfTheASpecificCoin()
+        public string MenuWithMoreOptionsForDetailsOfTheASpecificCoinHandler(string Coin)
         {
+            while (true)
+            {
+                CurrencyMenuShow.ShowOptionsThirdMenu();
+                string ChoiseOfThirdMenu = Console.ReadLine().ToUpper();
+                if (ChoiseOfThirdMenu == "YES")
+                {
+                    CurrencyMenuShow.WonderQuantity();
+                    string Quantity =  InputQuantityAndValidator();
+                    return $"{Coin}/{Quantity}";
+                    break;
+                } else if (ChoiseOfThirdMenu == "NO")
+                {
+                    return null;
+                    break;
+                } else
+                {
+                    Console.WriteLine("Digite apenas uma opção válida.");
+
+                }
+            }
 
         }
-        public void MoreDetailsForTheSpoeificoinCoin() {
-            //Will 
+        public string InputQuantityAndValidator()
+        {
+            while (true)
+            {
+                
+                decimal QuantityAsNumber;
+                var Quantity = Console.ReadLine();
+                try
+                {
+                     QuantityAsNumber = Convert.ToDecimal(Quantity);
+
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Digite Apenas um valor númerico ");
+                    continue;
+                }
+                return Quantity;
+            }
         }
+      
         public bool CheckIfChoiseIsAOptionValidFirstMenu(string ChoiseOfUser)
         {
             foreach(var option in OptionsFirstMenu.Values)
@@ -307,20 +364,23 @@ namespace CurrencyApp
 
 
         HttpClient client = new HttpClient();
-        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/last/";
+        public string BaseUrlAndressOfApi = "https://economia.awesomeapi.com.br/";
+        public string UrlAndressOfApiForReturnCoins= "https://economia.awesomeapi.com.br/last/";
 
-
-        public string BaseUrlAndressOfApiWithArgs;
-
-        public string ConfigArgsAndressOfApi { 
-            set {
-                
-                this.BaseUrlAndressOfApiWithArgs= this.BaseUrlAndressOfApi +value;
-            }
-        
+        public string UrlAndressApiForQuantity
+        {
+            get { return BaseUrlAndressOfApi; }
+            set { UrlAndressOfApiWithArgs = this.BaseUrlAndressOfApi + value; }
         }
+        public string UrlAndressApiForReturnCoinWithArgs
+        {
+            get { return this.UrlAndressOfApiForReturnCoins; }
+            set { UrlAndressOfApiWithArgs = UrlAndressOfApiForReturnCoins + value; }
+            
+        }
+        public string UrlAndressOfApiWithArgs;
 
-        
+      
 
         public CurrencyApiConection(string PathUrl = "All")
         {
@@ -328,7 +388,7 @@ namespace CurrencyApp
         }
         public string GetApiResponse()
         {
-            string Response = client.GetStringAsync(this.BaseUrlAndressOfApiWithArgs).Result;
+            string Response = client.GetStringAsync(this.UrlAndressOfApiWithArgs).Result;
             return Response;
         }
         
@@ -357,7 +417,7 @@ namespace CurrencyApp
                 CurrencyMenuHandlerLogic MenuHandler = new CurrencyMenuHandlerLogic();
                 MenuHandler.SecondMenu = CurrencyConectionApiInstance.ValuesSupportedForCallApi;
                 string KeyChoised = MenuHandler.ReadInputUserMenuHandler();
-                CurrencyConectionApiInstance.ConfigArgsAndressOfApi = KeyChoised;
+                CurrencyConectionApiInstance.UrlAndressApiForReturnCoinWithArgs = KeyChoised;
                 
                 MenuHandler.MenuOptionCallerApiFromChoise(CurrencyConectionApiInstance);
             
@@ -368,6 +428,8 @@ namespace CurrencyApp
                 JsonElement Coin =   CurrencyInstance.DeserializeJsonDocumentFromApiResult();
 
                 CurrencyMenuShow.ShowDetailsFromJsonDeserialized(Coin, MenuHandler.ListWithAllParametersChoised);
+               
+
                 
             
 

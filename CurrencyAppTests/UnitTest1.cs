@@ -18,15 +18,15 @@ namespace CurrencyAppTests
         public void TestGetterSetterVariable()
         {
             CurrencyApiInstance = new CurrencyApiConection();
-            CurrencyApiInstance.ConfigArgsAndressOfApi = "All";
-            Assert.AreEqual("https://economia.awesomeapi.com.br/last/All", CurrencyApiInstance.BaseUrlAndressOfApiWithArgs);
+            CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs = "All";
+            Assert.AreEqual("https://economia.awesomeapi.com.br/last/All", CurrencyApiInstance.UrlAndressOfApiWithArgs);
         }
 
         [TestMethod]
         public void TestGetApiResponse()
         {
             CurrencyApiInstance = new CurrencyApiConection();
-            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
+            CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs = "USD-BRL";
             this.MainClass.ResponseApiResult = CurrencyApiInstance.GetApiResponse();
             string ErrorApiReturn = "404";
             Assert.IsFalse(this.MainClass.ResponseApiResult.Contains(ErrorApiReturn));
@@ -45,7 +45,7 @@ namespace CurrencyAppTests
             
            
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
-            CurrencyApiInstance.ConfigArgsAndressOfApi= "USD-BRL";
+            CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs= "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentation = this.MainClass.CreateJsonDocumentFromApiResult();
             Assert.AreEqual("USD", JsonRepresentation.GetProperty("USDBRL").GetProperty("code").ToString());
@@ -60,7 +60,7 @@ namespace CurrencyAppTests
         public void TestDeserializeJsonDocumentFromApiResult()
         {
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
-            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
+            CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs = "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement Coin = this.MainClass.DeserializeJsonDocumentFromApiResult();
             Assert.AreEqual("USD", Coin.GetProperty("USDBRL").GetProperty("code").ToString());
@@ -83,7 +83,7 @@ namespace CurrencyAppTests
         {
             //Show just a coin
             CurrencyApiInstance = new CurrencyApiConection(this.MainClass.PathUrlRequired);
-            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL";
+            CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs = "USD-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentationWithJustACoin = this.MainClass.DeserializeJsonDocumentFromApiResult();
             Assert.AreEqual(JsonRepresentationWithJustACoin.GetProperty("USDBRL").GetProperty("code").ToString(),"USD");
@@ -92,7 +92,7 @@ namespace CurrencyAppTests
             CurrencyMenuShow.ShowDetailsFromJsonDeserialized(JsonRepresentationWithJustACoin,Coins);
 
             //Show with all Coins;
-            CurrencyApiInstance.ConfigArgsAndressOfApi = "USD-BRL,BTC-BRL";
+            CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs = "USD-BRL,BTC-BRL";
             this.MainClass.ResponseApiResult = this.CurrencyApiInstance.GetApiResponse();
             JsonElement JsonRepresentationWithMoreCoin = this.MainClass.DeserializeJsonDocumentFromApiResult();
             Assert.AreEqual(JsonRepresentationWithMoreCoin.GetProperty("USDBRL").GetProperty("code").ToString(), "USD");
@@ -116,7 +116,7 @@ namespace CurrencyAppTests
             string AllCoins = this.CurrencyMenuLogicInstance.ReturnAllCoinsSupportedAsStringForApiCall();
             string MessageWanted = "USD-BRL,BTC-BRL";
             Assert.AreEqual(AllCoins, MessageWanted);
-            this.CurrencyApiInstance.ConfigArgsAndressOfApi = AllCoins;
+            this.CurrencyApiInstance.UrlAndressApiForReturnCoinWithArgs = AllCoins;
 
             string ResultOfCallApi = this.CurrencyApiInstance.GetApiResponse();
             Console.WriteLine(ResultOfCallApi);
@@ -194,7 +194,7 @@ namespace CurrencyAppTests
         {
             CurrencyApiConection  Api = new CurrencyApiConection();
             this.CurrencyMenuLogicInstance.ChoiseOfUserValid = 1;
-            Api.ConfigArgsAndressOfApi = "USD-BRL";
+            Api.UrlAndressApiForReturnCoinWithArgs = "USD-BRL";
             string ResponseFirstCall = this.CurrencyMenuLogicInstance.MenuOptionCallerApiFromChoise(Api);
             Assert.IsTrue(ResponseFirstCall.Contains("USD"));
 
@@ -202,7 +202,7 @@ namespace CurrencyAppTests
             ///
             string EurCoinChoise = "EUR-BRL";
 
-            Api.ConfigArgsAndressOfApi = EurCoinChoise;
+            Api.UrlAndressApiForReturnCoinWithArgs = EurCoinChoise;
             string ReponseOfSecondCall = this.CurrencyMenuLogicInstance.MenuOptionCallerApiFromChoise(Api);
             Assert.IsTrue(ReponseOfSecondCall.Contains("EUR"));
             
