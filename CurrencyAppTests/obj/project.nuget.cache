@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PMakgxeN0fvi9sVfol7jGFib1CUeP5uv/QM4lJrZnLRVHGywu++c9uePJydfx2PKq9RR2QjVgt5OeAnSyKxaSw==",
+  "dgSpecHash": "ccYDnFT3VmGmmJFKWnAU7B44bPl/u8soFWOVb1Is1ErVQOXRH9G+6MCY2MDyssV8E4bZ+r8pDUQM+NCRP2zimQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\carlos h\\Downloads\\Programação\\Programas Prompt\\CurrencyApp\\CurrencyAppTests\\CurrencyAppTests.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\carlos h\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\carlos h\\.nuget\\packages\\microsoft.testplatform.objectmodel\\16.11.0\\microsoft.testplatform.objectmodel.16.11.0.nupkg.sha512",
     "C:\\Users\\carlos h\\.nuget\\packages\\microsoft.testplatform.testhost\\16.11.0\\microsoft.testplatform.testhost.16.11.0.nupkg.sha512",
+    "C:\\Users\\carlos h\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.15.1\\microsoft.visualstudio.azure.containers.tools.targets.1.15.1.nupkg.sha512",
     "C:\\Users\\carlos h\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\carlos h\\.nuget\\packages\\mstest.testadapter\\2.2.7\\mstest.testadapter.2.2.7.nupkg.sha512",
     "C:\\Users\\carlos h\\.nuget\\packages\\mstest.testframework\\2.2.7\\mstest.testframework.2.2.7.nupkg.sha512",

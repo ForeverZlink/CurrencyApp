@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CurrencyApp": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
