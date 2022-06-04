@@ -9,8 +9,6 @@ COPY ["CurrencyApp.csproj", "."]
 RUN dotnet restore "./CurrencyApp.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "CurrencyApp.csproj" -c Release -o /app/build
-
 
 RUN dotnet publish "CurrencyApp.csproj" -c Release -o /app/publish
 
